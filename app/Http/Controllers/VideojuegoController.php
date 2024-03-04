@@ -18,7 +18,7 @@ class VideojuegoController extends Controller
     public function index()
     {
         $videojuegos = Auth()->user()->videojuegos;
-        return view("videojuegos.index", ["videojuegos"=>$videojuegos]);
+        return view("videojuegos.index", ["videojuegos" => $videojuegos]);
     }
 
     /**
@@ -26,7 +26,7 @@ class VideojuegoController extends Controller
      */
     public function create()
     {
-        return view("videojuegos.create", ["desarrolladoras"=>Desarrolladora::all()]);
+        return view("videojuegos.create", ["desarrolladoras" => Desarrolladora::all()]);
     }
 
     /**
@@ -74,7 +74,7 @@ class VideojuegoController extends Controller
         if (!Gate::allows('update', $videojuego)) {
             abort(403);
         }
-        return view("videojuegos.edit", ["videojuego" => $videojuego, "desarrolladoras"=>Desarrolladora::all()]);
+        return view("videojuegos.edit", ["videojuego" => $videojuego, "desarrolladoras" => Desarrolladora::all()]);
     }
 
     /**
@@ -115,6 +115,23 @@ class VideojuegoController extends Controller
             abort(403);
         }
         $videojuego->delete();
+        return redirect()->route("videojuegos.index");
+    }
+    public function poseoIndex()
+    {
+        return view("videojuegos.poseoIndex", ["videojuegos" => Videojuego::all()]);
+    }
+    public function poseoCreate(Request $request)
+    {
+        $videojuego = Videojuego::find($request->videojuego_id);
+        $user = auth()->user();
+        if ($request->tipo == "Lo tengo") {
+            if (!$user->videojuegos->find($request->videojuego_id)) {
+                $videojuego->users()->attach($user->id);
+            }
+        } else if ($request->tipo == "No lo tengo") {
+            $videojuego->users()->detach($user->id);
+        }
         return redirect()->route("videojuegos.index");
     }
 }

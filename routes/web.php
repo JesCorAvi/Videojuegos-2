@@ -24,6 +24,11 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
+Route::get('/videojuegos/poseo', [VideojuegoController::class, 'poseoIndex'])->name('videojuegos.poseoIndex')->middleware("auth");
+
+Route::post('videojuegos/poseo', [VideojuegoController::class, "poseoCreate"])->name('videojuegos.poseoCreate')->middleware("auth");
+
+
 Route::resource('videojuegos', VideojuegoController::class)->middleware("auth");
 
 require __DIR__.'/auth.php';
