@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Distribuidora;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,10 @@ class DesarrolladoraFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nombre' => $this->faker->name(),
+            'distribuidora_id' => function () {
+                return Distribuidora::factory()->create()->id;
+            },
         ];
     }
 }

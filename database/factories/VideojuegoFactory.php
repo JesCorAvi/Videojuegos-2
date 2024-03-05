@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Desarrolladora;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,12 @@ class VideojuegoFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'titulo' => $this->faker->title(),
+            'anyo' => $this->faker->year(),
+            'portada' =>$this->faker->url(),
+            "desarrolladora_id" => function () {
+                return Desarrolladora::factory()->create()->id;
+            },
         ];
     }
 }
