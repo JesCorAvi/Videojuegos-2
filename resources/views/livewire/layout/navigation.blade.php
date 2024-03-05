@@ -30,6 +30,11 @@ new class extends Component
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('desarrolladoras.index')" :active="request()->routeIs('desarrolladoras.index')" wire:navigate>
+                        {{ __('Desarrolladoras') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('videojuegos.index')" :active="request()->routeIs('videojuegos.index')" wire:navigate>
                         {{ __('Videojuegos') }}
                     </x-nav-link>

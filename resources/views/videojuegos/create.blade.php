@@ -30,6 +30,12 @@
             required />
             </select>
         </div>
+        <div class="mb-5">
+            <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Etiquetas</label>
+                @foreach ($etiquetas as $etiqueta)
+                    <input type="checkbox" name="etiquetas[]" value="{{$etiqueta->id}}">{{$etiqueta->nombre}}<br>
+                @endforeach
+        </div>
             <button type="Crear"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Crear</button>
     </form>

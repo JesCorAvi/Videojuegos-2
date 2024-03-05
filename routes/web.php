@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DesarrolladoraController;
 use App\Http\Controllers\VideojuegoController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,5 +31,7 @@ Route::post('videojuegos/poseo', [VideojuegoController::class, "poseoCreate"])->
 
 
 Route::resource('videojuegos', VideojuegoController::class)->middleware("auth");
+Route::resource('desarrolladoras', DesarrolladoraController::class)->middleware("auth");
+
 
 require __DIR__.'/auth.php';

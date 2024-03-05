@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Desarrolladora;
+use App\Models\Etiqueta;
 use Illuminate\Http\Request;
 use App\Models\Videojuego;
 use Illuminate\Support\Facades\Storage;
@@ -26,7 +27,7 @@ class VideojuegoController extends Controller
      */
     public function create()
     {
-        return view("videojuegos.create", ["desarrolladoras" => Desarrolladora::all()]);
+        return view("videojuegos.create", ["desarrolladoras" => Desarrolladora::all(), "etiquetas" => Etiqueta::all()]);
     }
 
     /**
@@ -49,12 +50,17 @@ class VideojuegoController extends Controller
         $imageR->save($rute);
 
 
-        Videojuego::create([
+        $videojuego = Videojuego::create([
             "titulo" => $request->titulo,
             "anyo" => $request->anyo,
             "desarrolladora_id" => $request->desarrolladora_id,
             "portada" => 'storage/uploads/portadas/' . $nombre,
         ]);
+        if($request->etiquetas){
+            foreach($request->etiquetas as $etiqueta){
+                $videojuego->etiquetas()->attach($etiqueta);
+            }
+        }
         return redirect()->route("videojuegos.index");
     }
 
@@ -74,7 +80,7 @@ class VideojuegoController extends Controller
         if (!Gate::allows('update', $videojuego)) {
             abort(403);
         }
-        return view("videojuegos.edit", ["videojuego" => $videojuego, "desarrolladoras" => Desarrolladora::all()]);
+        return view("videojuegos.edit", ["videojuego" => $videojuego, "desarrolladoras" => Desarrolladora::all(), "etiquetas" => Etiqueta::all()]);
     }
 
     /**
@@ -97,12 +103,18 @@ class VideojuegoController extends Controller
         $rute = Storage::path('public/uploads/portadas/' . $nombre);
         $imageR->save($rute);
 
+        $videojuego->etiquetas()->detach();
         $videojuego->update([
             "titulo" => $request->titulo,
             "anyo" => $request->anyo,
             "desarrolladora_id" => $request->desarrolladora_id,
             "portada" => 'storage/uploads/portadas/' . $nombre,
         ]);
+        if($request->etiquetas){
+            foreach($request->etiquetas as $etiqueta){
+                $videojuego->etiquetas()->attach($etiqueta);
+            }
+        }
         return redirect()->route("videojuegos.index");
     }
 
